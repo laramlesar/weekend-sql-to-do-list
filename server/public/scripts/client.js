@@ -11,6 +11,24 @@ function handleReady() {
 
 function completeTask() {
     console.log('complete clicked');
+    //change to strike through
+    let task = $(this).closest('tr').data('task');
+    task.status = 'complete';
+    console.log(task.status);
+    let idToComplete = task.id;
+    console.log(task);
+    $.ajax({
+        method: 'PUT',//update
+        url: `/tasks/${idToComplete}`,
+        data: task
+    }).then(function(response){
+        console.log('complete', response);
+        refreshTasks();
+    }).catch(function () {
+        alert('error in complete')
+    })
+
+
     
 }
 
@@ -22,6 +40,7 @@ function handleAddTask(){
     //taskToAdd = input data
     let task = {}
     task.name = $('#toDoList').val();
+    task.status = 'incomplete';
     console.log('task =' + task.name);
     addTask(task);
     
@@ -89,10 +108,20 @@ function  appendList(tasks) {
         $tr.data('task', task);
         console.log('task', task);
         console.log(task);
+        
         $tr.append(`<td>${task.task}</td>`);
+        if (task.status === 'incomplete'){
+            $('td').css("background-color", "red");
+        }
+        
+        $tr.append(`<td>${task.status}</td>`);
         $tr.append(`<td><button class="deleteBtn">DELETE</button></td>`);
-        $tr.append(`<td><button class="complete">COMPLETE</button></td>`);
+        if(task.status === 'incomplete'){
+            $tr.append(`<td><button class="complete">COMPLETE</button></td>`);
+        }
+    
         $('#taskList').append($tr);
+        
     }
 
 }

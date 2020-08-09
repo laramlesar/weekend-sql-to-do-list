@@ -19,9 +19,9 @@ router.get('/', (req, res) => {
     let task = req.body;
     console.log(`Adding task`, task);
   
-    let queryText = `INSERT INTO "weekend-to-do-app" ("task")
-                     VALUES ($1);`;
-    pool.query(queryText, [task.name])
+    let queryText = `INSERT INTO "weekend-to-do-app" ("task", "status")
+                     VALUES ($1, $2);`;
+    pool.query(queryText, [task.name, task.status])
       .then(result => {
         res.sendStatus(201);
       })
@@ -45,21 +45,22 @@ router.get('/', (req, res) => {
           res.sendStatus(500);
       })
   })
-  /*router.put('/:id',  (req, res) => {
+  router.put('/:id',  (req, res) => {
     let task = req.body; // task with updated content
     let id = req.params.id; // id of the task to update
     console.log(req.body);
     //console.log(req.params.id);
-    console.log(`Updating tasks ${id} with `, task);
-    console.log(req.body.status);
+    //console.log(`Updating tasks ${id} with `, task);
+    console.log('hi', req.body.status);
     let queryText = '';
-    if(req.body.status === 'incomplete'){
-        queryText =`
+        
+     //console.log('INCOMPLETE UPDATED');
+     queryText =`
           UPDATE "weekend-to-do-app"
-          SET "status" = 'completed'
+          SET "status" = 'complete'
           WHERE "id" = $1;
           `
-    }
+    
     pool.query(queryText, [req.params.id]).then((result)=>{
       res.sendStatus(200);
     }).catch((error)=>{
@@ -71,5 +72,5 @@ router.get('/', (req, res) => {
   
   
   });
-*/
+
 module.exports = router;
