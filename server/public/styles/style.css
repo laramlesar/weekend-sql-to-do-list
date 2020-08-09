@@ -1,0 +1,9 @@
+header{
+    color: blueviolet;
+}
+
+div{
+    background-color: mangowhip;
+    inline-size: 100px;
+    height: 100px;
+}
