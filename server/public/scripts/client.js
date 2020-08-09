@@ -104,24 +104,28 @@ function  appendList(tasks) {
     for(let i = 0; i < tasks.length; i+= 1){
         let task = tasks[i];
         //console.log('this', + task.id);
-        let $tr = $('<tr></tr>');
+        let $tr = $('<tr></tr>')
+
+        if (task.status === 'incomplete'){
+            $tr.css("background-color", "red");
+        }
+
+        else {
+            $tr.css("background-color", "green");
+        }
+
         $tr.data('task', task);
         console.log('task', task);
         console.log(task);
-        
         $tr.append(`<td>${task.task}</td>`);
-        if (task.status === 'incomplete'){
-            $('td').css("background-color", "red");
-        }
-        
         $tr.append(`<td>${task.status}</td>`);
         $tr.append(`<td><button class="deleteBtn">DELETE</button></td>`);
-        if(task.status === 'incomplete'){
-            $tr.append(`<td><button class="complete">COMPLETE</button></td>`);
-        }
-    
         $('#taskList').append($tr);
         
+        if(task.status === 'incomplete')
+        {
+            $tr.append(`<td><button class="complete">COMPLETE</button></td>`);
+        }
     }
 
 }
