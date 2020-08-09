@@ -30,7 +30,22 @@ router.get('/', (req, res) => {
         res.sendStatus(500);
       });
   });
-  router.put('/:id',  (req, res) => {
+
+  //delete
+  router.delete('/:id', (req, res)=>{
+      console.log('delete called with id of', req.params.id);
+      let queryText = `
+      DELETE FROM "weekend-to-do-app"
+      WHERE "id" = $1;
+      `
+      pool.query(queryText, [req.params.id]).then((result)=>{
+          res.sendStatus(200);
+      }).catch((error)=>{
+          console.log('error in delete', error);
+          res.sendStatus(500);
+      })
+  })
+  /*router.put('/:id',  (req, res) => {
     let task = req.body; // task with updated content
     let id = req.params.id; // id of the task to update
     console.log(req.body);
@@ -38,7 +53,7 @@ router.get('/', (req, res) => {
     console.log(`Updating tasks ${id} with `, task);
     console.log(req.body.status);
     let queryText = '';
-    if(req.body.status === 'read'){
+    if(req.body.status === 'incomplete'){
         queryText =`
           UPDATE "weekend-to-do-app"
           SET "status" = 'completed'
@@ -52,9 +67,9 @@ router.get('/', (req, res) => {
       res.sendStatus(500);
     })
   
-    // TODO - REPLACE BELOW WITH YOUR CODE
-    //res.sendStatus(500);
+    
+  
   
   });
-
+*/
 module.exports = router;

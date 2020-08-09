@@ -5,7 +5,13 @@ function handleReady() {
     console.log('jquery has joined the party');
     //click listeners will go here
     $('#addBtn').on('click', handleAddTask);
-    $('#deleteBtn').on('click', handleAddTask);
+    $('#taskList').on('click', '.deleteBtn', deleteTask);
+    $('#taskList').on('click', '.complete', completeTask);
+}
+
+function completeTask() {
+    console.log('complete clicked');
+    
 }
 
 function handleAddTask(){
@@ -21,12 +27,18 @@ function handleAddTask(){
     
 }
 
-/*function deleteTask(){
+//delete task
+function deleteTask(){
     console.log('delete clicked');
     let task = $(this).closest('tr').data('task');
-    console.log(task.id);
+    //console.log(task.id);
+    let idToDelete = task.id;
+    //let idToDelete = 32;
+    console.log($(this).closest('tr').data('task'))
+    
+    
     $.ajax({
-        method: 'DELETE'
+        method: 'DELETE',
         url: `/tasks/${idToDelete}`,
     }).then(function(response){
         console.log(response);
@@ -36,7 +48,7 @@ function handleAddTask(){
     })
     
 }
-*/
+
 //add a task to the database
 function addTask(task) {
     $.ajax({
@@ -66,18 +78,21 @@ function refreshTasks(){
     });
 }
 
-//display tasks on DOM
-function  renderTasks(tasks) {
+//display array of tasks on DOM
+function  appendList(tasks) {
     $('#taskList').empty();
-
+    
     for(let i = 0; i < tasks.length; i+= 1){
-        let tasks = tasks[i];
+        let task = tasks[i];
+        //console.log('this', + task.id);
         let $tr = $('<tr></tr>');
-        $tr.data('tasks', tasks);
-        $tr.append(`<td>${tasks.tasks}</td>`);
+        $tr.data('task', task);
+        console.log('task', task);
+        console.log(task);
+        $tr.append(`<td>${task.task}</td>`);
         $tr.append(`<td><button class="deleteBtn">DELETE</button></td>`);
         $tr.append(`<td><button class="complete">COMPLETE</button></td>`);
         $('#taskList').append($tr);
     }
-    
+
 }
